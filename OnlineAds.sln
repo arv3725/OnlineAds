@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineAds", "OnlineAds\OnlineAds.csproj", "{97386FA3-91D9-45D3-822D-676CEAD4FA00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97386FA3-91D9-45D3-822D-676CEAD4FA00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97386FA3-91D9-45D3-822D-676CEAD4FA00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97386FA3-91D9-45D3-822D-676CEAD4FA00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97386FA3-91D9-45D3-822D-676CEAD4FA00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74B20511-11B5-4058-BA57-24AF7D4615A9}
+	EndGlobalSection
+EndGlobal

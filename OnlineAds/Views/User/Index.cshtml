@@ -1,0 +1,42 @@
+﻿@using PagedList.Mvc
+@model cloudscribe.Pagination.Models.PagedResult<OnlineAds.Models.TblCategory>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Controller"] = "User";
+    ViewData["Action"] = "Index";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <!--
+    <link href="~/Content/paginition.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    -->
+</head>
+<body>
+    <div class="container" style="height:1150px; ">
+        <div class="row" style="margin-bottom:40px">
+            @if (Model != null)
+            {
+                foreach (var item in Model.Data)
+                {
+                    <div class="col-lg-4 col-md-4" style="height:200px;margin-top:100px">
+                        <img src="@Url.Content(@item.CatImage)" style=" height:100%;width:100% ;border-radius:50px 50px 50px 50px" alt="Image"/>
+                        <h5 class="card-title">@item.CatName</h5>
+                        <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center"> @Html.ActionLink(@item.CatName, "Ads", new {id=@item.CatId })</h4>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+</body>
+</html>
+
