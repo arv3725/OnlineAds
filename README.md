@@ -14,4 +14,4 @@ All Codes are in master brach.
 
 
 Database Diagram: 
-![alt text](https://github.com/arv3725/OnlineAds/blob/master/OnlineAds_DB_Diagram.png)
+![Database Diagram](https://github.com/arv3725/OnlineAds/blob/master/OnlineAds_DB_Diagram.png)
