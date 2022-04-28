@@ -12,3 +12,6 @@ All Codes are in master brach.
 #### Home Controller functionalities
 1. Index 2. About 3. Privacy
 
+
+Database Diagram: 
+![alt text](https://github.com/arv3725/OnlineAds/blob/master/OnlineAds_DB_Diagram.png)
