@@ -1,13 +1,11 @@
 ﻿@model OnlineAds.Models.TblCategory
+
 @{
-    Layout = null;
+    ViewData["Title"] = "Create Category";
+    Layout = "../Shared/_Layout.cshtml";
 }
 
 <style>
-    #box {
-        border: 1px solid black;
-        height: 100%;
-    }
 
     #main-div {
         height: 900px;
@@ -36,8 +34,6 @@
     }
 </style>
 
-<link href="~/Content/bootstrap.css" rel="stylesheet" />
-<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
 
 
@@ -53,34 +49,30 @@
       {
             <div class="insidebox">
                 <div> <h1>Add Category</h1>
-                    <h3>@ViewBag.sessionv</h3></div>
+                 </div>
 
 
 
-
+                 @Html.ValidationSummary(true, "", new {@class = "text-danger"})
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
                         @*<asp:TextBox ID="TextBox1" runat="server" class="form-control" placeholder="Username" required="required"></asp:TextBox>*@
-                        @Html.TextBoxFor(x => x.CatName, new { @class = "form-control", @placeholder = "Username" })
+                        @Html.TextBoxFor(x => x.CatName, new { @class = "form-control", @placeholder = "Category Name", required="required" })
+                        @Html.ValidationMessageFor(x => x.CatName, "", new {@class = "text-danger"}) 
 
                     </div>
-                    <span style="color:red">   @Html.ValidationMessageFor(x => x.CatName) </span>
+                    <span style="color:red">   @Html.ValidationMessageFor(x => x.CatName, "", new {@class = "text-danger"}) </span>
 
                 </div>
                
 
                 <div class="form-group">
                     <div class="input-group">
-                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                        
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div> 
+                        <label>Category Image</label>
                         <input type="file" name="imgfile" id="imgfile" class="form-control" required="required" />
-
-
-
                     </div>
-                    
-
                 </div>
 
 

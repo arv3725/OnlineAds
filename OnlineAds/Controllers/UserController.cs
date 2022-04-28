@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineAds.Models;
-using PagedList;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +22,7 @@ namespace OnlineAds.Controllers
         // above is for image upload
         OnlineAdsDBContext db = new OnlineAdsDBContext();
 
-        public IActionResult Index(int pageNumber=1, int pageSize=2)
+        public IActionResult Index(int pageNumber=1, int pageSize=9)
         {
             int ExcludeRecords = (pageSize*pageNumber) - pageSize;
 
@@ -56,6 +55,8 @@ namespace OnlineAds.Controllers
             }
             else
             {
+                Encryption enc = new Encryption();
+                string codedPasswrd = enc.Encode(uvm.UPassword);
                 TblUser u = new TblUser();
                 u.UName = uvm.UName;
                 u.UDob = uvm.UDob;
@@ -63,7 +64,7 @@ namespace OnlineAds.Controllers
                 u.UCity = uvm.UCity;
                 u.UState = uvm.UState;
                 u.UEmail = uvm.UEmail;
-                u.UPassword = uvm.UPassword;
+                u.UPassword = codedPasswrd;
                 u.UImage = path;
                 u.UContact = uvm.UContact;
                 db.TblUsers.Add(u);
@@ -81,14 +82,17 @@ namespace OnlineAds.Controllers
             return View();
         }
 
+
         [HttpPost]
         public IActionResult login(TblUser uvm)
         {
-            TblUser user = db.TblUsers.Where(x => x.UEmail == uvm.UEmail && x.UPassword == uvm.UPassword).SingleOrDefault();
+            Encryption enc = new Encryption();
+            string codedPasswrd = enc.Encode(uvm.UPassword);
+            TblUser user = db.TblUsers.Where(x => x.UEmail == uvm.UEmail && x.UPassword == codedPasswrd).SingleOrDefault();
             if (user != null)
             {
                 HttpContext.Session.SetString("u_id", user.UId.ToString());
-                return RedirectToAction("CreateAd");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -101,6 +105,10 @@ namespace OnlineAds.Controllers
         [HttpGet]
         public ActionResult CreateAd()
         {
+            if (HttpContext.Session.GetString("u_id") == null)
+            {
+                return RedirectToAction("login");
+            }
             List<TblCategory> li = db.TblCategories.ToList();
             ViewBag.categorylist = new SelectList(li, "CatId", "CatName");
 
@@ -138,22 +146,12 @@ namespace OnlineAds.Controllers
         }
 
 
-
-        //public ActionResult Ads(int? id, int? page)
-        //{
-        //    int pagesize = 9, pageindex = 1;
-        //    pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-        //    var list = db.TblProducts.Where(x => x.ProFkCat == id).OrderByDescending(x => x.ProId).ToList();
-        //    IPagedList<TblProduct> stu = list.ToPagedList(pageindex, pagesize);
-
-
-        //    return View(stu);
-
-
-        //}
-
-        public IActionResult Ads(int ?id, int pageNumber = 1, int pageSize = 2)
+        public IActionResult Ads(int ?id, int pageNumber = 1, int pageSize = 9)
         {
+            if (HttpContext.Session.GetString("u_id") == null)
+            {
+                return RedirectToAction("login");
+            }
             int ExcludeRecords = (pageSize * pageNumber) - pageSize;
 
             var stu = db.TblProducts.Where(x => x.ProFkCat == id).OrderByDescending(x => x.ProId)
@@ -175,24 +173,36 @@ namespace OnlineAds.Controllers
 
 
         [HttpPost]
-        public ActionResult Ads(int? id, int? page, string search)
+        public IActionResult Ads(int? id, string search, int pageNumber = 1, int pageSize = 9)
         {
-            int pagesize = 9, pageindex = 1;
-            pageindex = page.HasValue ? Convert.ToInt32(page) : 1;
-            var list = db.TblProducts.Where(x => x.ProName.Contains(search)).OrderByDescending(x => x.ProId).ToList();
-            IPagedList<TblProduct> stu = list.ToPagedList(pageindex, pagesize);
+            int ExcludeRecords = (pageSize * pageNumber) - pageSize;
 
+            var stu = db.TblProducts.Where(x => x.ProName.Contains(search) && x.ProFkCat == id).OrderByDescending(x => x.ProId)
+                .Skip(ExcludeRecords)
+                .Take(pageSize);
 
-            return View(stu);
+            var result = new PagedResult<TblProduct>
+            {
+                Data = stu.ToList(),
+                TotalItems = db.TblProducts.Where(x => x.ProFkCat == id).Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+            };
+
+            return View(result);
 
 
         }
 
 
 
-        public IActionResult ViewAd(int? id)
+        public IActionResult ViewAd(int id)
         {
-            
+            if (HttpContext.Session.GetString("u_id") == null)
+            {
+                return RedirectToAction("login");
+            }
+
             Adviewmodel ad = new Adviewmodel();
             TblProduct p = db.TblProducts.Where(x => x.ProId == id).SingleOrDefault();
             ad.pro_id = p.ProId;
@@ -210,25 +220,81 @@ namespace OnlineAds.Controllers
             return View(ad);
         }
 
+        public IActionResult updateAd(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult updateAd(int id, TblProduct pvm, IFormFile imgfile)
+        {
+            TblProduct prod = db.TblProducts.Where(x => x.ProId == id).SingleOrDefault();
+            if (prod != null)
+            {
+                ViewBag.sessionv = HttpContext.Session.GetString("u_id");
+                prod.ProName = pvm.ProName;
+
+                if (imgfile != null)
+                {
+                    string path = uploadingfile(imgfile);
+                    if (path.Equals("-1"))
+                    {
+                        ViewBag.error = "Image could not be uploaded....";
+                    }
+                    else
+                    {
+                        string prevImage = prod.ProImage;
+                        prod.ProImage = path;
+                        if ((System.IO.File.Exists(prevImage)))
+                        {
+                            System.IO.File.Delete(prevImage);
+                        }
+                        else
+                        {
+                            ViewBag.error = "Previous image is not deleted!!";
+                        }
+                    }
+                }
+
+                prod.ProDes = pvm.ProDes;
+                prod.ProPrice = pvm.ProPrice;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+
+        public IActionResult DeleteAd(int? id)
+        {
+            if (HttpContext.Session.GetString("u_id") == null)
+            {
+                return RedirectToAction("login");
+            }
+            TblProduct prod = db.TblProducts.Where(x => x.ProId == id).SingleOrDefault();
+
+            return View(prod);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAd(int id)
+        {
+            TblProduct prod = db.TblProducts.Where(x => x.ProId == id).SingleOrDefault();
+            db.TblProducts.Remove(prod);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
         public ActionResult Signout()
         {
             HttpContext.Session.Clear();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-
-
-        public ActionResult DeleteAd(int? id)
-        {
-
-            TblProduct p = db.TblProducts.Where(x => x.ProId == id).SingleOrDefault();
-            db.TblProducts.Remove(p);
-            db.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
 
 
         public string uploadingfile(IFormFile file)
@@ -244,12 +310,12 @@ namespace OnlineAds.Controllers
                     try
                     {
                         string webRootPath = _webHostEnvironment.WebRootPath;
-                        string contentRootPath = _webHostEnvironment.ContentRootPath;
+                       
 
                         path = Path.Combine(webRootPath, "upload");
 
-                        //or path = Path.Combine(contentRootPath , "wwwroot" ,"CSS" );
-                        string fileName = Path.GetFileName(file.FileName);
+                        
+                        string fileName = random + Path.GetFileName(file.FileName);
 
                         using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
                         {

@@ -1,0 +1,42 @@
+﻿@model cloudscribe.Pagination.Models.PagedResult<OnlineAds.Models.TblProduct>
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "All Ads";
+    ViewData["Controller"] = "Admin";
+    ViewData["Action"] = "ViewAllAds";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div class="container" style="height:1150px; ">
+
+        <div class="row" style="margin-bottom:40px">
+            @if (Model != null)
+            {
+                foreach (var item in Model.Data)
+                {
+                    <div class="col-lg-4 col-md-4" style="height:200px;margin-top:100px">
+                        <img class="img img-responsive cimg" src="@Url.Content(item.ProImage)" style=" height:100%;width:100% ;border-radius:50px 50px 50px 50px" />
+                        <h4 style="color:#808080; font-family:'Arial Rounded MT';text-align:center"> @Html.ActionLink(@item.ProName, "ViewAdById", new { id = @item.ProId })</h4>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+        
+
+    <div style="margin-left: auto; margin-right: auto;">
+        <partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+    </div>
+
+</body>
+</html>
+    
+

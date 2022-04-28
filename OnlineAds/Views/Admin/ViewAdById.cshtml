@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model OnlineAds.Models.Adviewmodel 
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "Ad By Id";
+    ViewData["Controller"] = "Admin";
+    ViewData["Action"] = "ViewAdById";
+}
+
+<style>
+    td{ padding:20px;
+
+
+    }
+
+</style>
+
+<div class="row">
+
+
+    <div class="col-lg-8 col-md-8">
+       
+        <div>
+            <h1>@Model.pro_name <small>AD-ID:@Model.pro_id</small></h1> 
+        </div>
+
+        <img src="@Url.Content(@Model.pro_image)"  style="width:800PX; height:450PX"/>
+
+        <div>
+            <h1>Description: </h1>
+            <p>@Model.pro_des</p>
+       </div>
+
+        <table>
+
+            <tr> <td>Price: </td> <td>@Model.pro_price </td> </tr>
+            <tr> <td>Category: </td> <td>@Model.cat_name </td> </tr>
+            <tr> <td>Posted by: </td> <td>@Model.u_name <img src="@Url.Content(@Model.u_image)" style="width:40px; height:40px" /> </td> </tr>
+            <tr> <td>Contact: </td> <td>@Model.u_contact  </td> </tr>
+            <tr> <td colspan="2">           
+                 @Html.ActionLink("Close this Ad", "DeleteAd", new {@class="btn btn-danger btn-sm" ,id = Model.pro_id })
+                </td></tr>
+
+        </table>
+        
+
+
+    </div>
+
+
+</div>

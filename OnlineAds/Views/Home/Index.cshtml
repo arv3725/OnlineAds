@@ -1,8 +1,86 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model OnlineAds.Models.TblUser
+@using Microsoft.AspNetCore.Http;
+@using OnlineAds.Models;
+@{
+    Layout = "../Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+  /* Make the image fully responsive */
+  .carousel-inner > .item > img {
+  width:640px;
+  height:360px;
+  padding-bottom: 25px;
+}
+  </style>
+</head>
+<body>
+    <div>
+        <h2>Welcome to Ad-Omega</h2>
+        <p style="font-size: 20px;">Here you can view and post your advertisements.</p>
+    </div>
+
+<div id="demo" class="carousel slide col-12" data-ride="carousel">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+  </ul>
+  
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="~/images/ad-bg.jpg" alt="Los Angeles" width="1100" height="500">
+    </div>
+    <div class="carousel-item">
+      <img src="~/images/ad-bg2.jpg" alt="Chicago" width="1100" height="500">
+    </div>
+    <div class="carousel-item">
+      <img src="~/images/ad-bg4.jpg" alt="New York" width="1100" height="500">
+    </div>
+  </div>
+  
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
 </div>
+<div style= "padding-top: 20px;">
+    <div>
+        <br /><br />
+        <h3>Why Advertisement?</h3>
+        <p>
+            Advertisements help people become aware of any product or service through the use of commercial methods. 
+            This kind of publicity helps to endorse a specific interest of a person for product sale.<br />
+        </p>
+        <p>
+            As the world is becoming more competitive now, everyone wants to be ahead in the competition. 
+            Thus, the advertisement also comes under the same category. Advertising is done in a lot of ways.<br />
+        </p>
+        <p>
+            Further, advertising also happens to find lost people, shops, plots, good and more. Through this, 
+            people get to know about a nearby shop is on sale or the availability of a new tutor or coaching centre.<br />
+        </p>
+    </div>
+    
+</div>
+
+</body>
+</html>

@@ -4,6 +4,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>@ViewData["Title"] - Ad-Omega</title>
+        @RenderSection("head", required: false)
+        
+        <!-- Main CSS-->
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+        <!-- Validation -->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        
+       
         <style>
 .na
 {
@@ -11,22 +24,19 @@ text-decoration:none;
 color:white;
 
  }
-        </style>
-        <title>@ViewData["Title"] - OnlineAds</title>
-        @RenderSection("head", required: false)
 
-        
-        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+ .main-body {
+     padding-top: 40px;
+ }
+        </style>
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-dark bg-dark">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand">@Html.ActionLink("Online Ads", "Index", "User", null, new { @class="nav-link" })</a>
-                </div>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav mr-auto">
                 <ul class="nav navbar-nav">
-                    <li class="nav-item">@Html.ActionLink("Category", "Index", "User", null, new { @class="nav-link" })</li>
+                    
+                    <li class="nav-item">@Html.ActionLink("Ad Categories", "Index", "User", null, new { @class="nav-link" })</li>
                     <li class="nav-item">
                         @if(Context.Session.GetString("u_id") != null)
                         {
@@ -35,34 +45,86 @@ color:white;
                         }
                     </li>
                 </ul>
-                <ul class="list-inline">
-                    <li class="nav-item">
-                        @if (Context.Session.GetString("u_id") == null)
-                        {
-
-                            @Html.ActionLink("Sign In", "login", "User", null, new { @class="nav-link" })
-
-                        }
-                    </li>
-                    <li class="nav-item">
-                        @if (Context.Session.GetString("u_id") == null)
-                        {
-                            @Html.ActionLink("Sign Up", "SignUp", "User", null, new { @class="nav-link" })
-                        }
-                        else
-                        {
-                          @Html.ActionLink("Sign Out", "Signout", "User", null, new { @class="nav-link" })
-                        }
-
-                    <li>
+            </div>
+            <div class="navbar-nav mr-auto ml-auto">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">@Html.ActionLink("Ad-Omega", "Index", "User", null, new { @class="nav-link" })</li>
                 </ul>
             </div>
-          
-           
-        </nav>
+                <div class="navbar-nav ml-auto">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            @if (Context.Session.GetString("u_id") == null)
+                            {
 
-                @RenderBody()
+                                @Html.ActionLink("Sign In", "login", "User", null, new { @class="nav-link" })
+
+                            }
+                        </li>
+                        <li class="nav-item">
+                            @if (Context.Session.GetString("u_id") == null)
+                            {
+                               
+                                @Html.ActionLink("Sign Up", "SignUp", "User", null, new { @class="nav-link" })
+                            }
+                            else
+                            {
+                                
+                              @Html.ActionLink("Sign Out", "Signout", "User", null, new { @class="nav-link" })
+                            }
+                         </li>
+                    </ul>
+                </div>
+
+        </div>
+        </nav>
+        <div class="container main-body">
+            @RenderBody()
+        </div>
+                
+
+        <footer class="footer" style="background-color:rgb(203, 195, 227);">
+        <div class="container">
+            <div class="row">             
+                <div class="col-4 offset-1 col-sm-2">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Privacy", "Privacy", "Home")</li>
+                    </ul>
+                </div>
+                <div class="col-10 col-sm-5">
+                    <h5>Our Address</h5>
+                    <address>
+		              Team-06<br>
+		              21-Feb-2022 Interndhip Batch<br>
+		              Wipro Limited<br>
+		              <i class="fa fa-phone fa-lg"></i>: +91 9110986474<br>
+		              <i class="fa fa-fax fa-lg"></i>: +91 7879856729<br>
+		              <i class="fa fa-envelope fa-lg"></i>: <a href="mailto:arv3725@gmail.com">ad-omega.marketing.com</a>
+		           </address>
+                </div>
+                <div class="col-12 col-sm-4 align-self-center">
+                    <div class="text-center">
+                        <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i class="fa fa-google-plus fa-lg"></i></a>
+                        <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i class="fa fa-facebook fa-lg"></i></a>
+                        <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/"><i class="fa fa-linkedin fa-lg"></i></a>
+                        <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i class="fa fa-twitter fa-lg"></i></a>
+                        <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
+                        <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
+                    </div>
+                </div>
+           </div>
+           <div class="row justify-content-center">             
+                <div class="col-auto">
+                    <p>© Copyright 2022 Ad-Omega</p>
+                </div>
+           </div>
+        </div>
+    </footer>
                 <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
                 <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+                <script src="~/js/global.js"></script>
     </body>
 </html>

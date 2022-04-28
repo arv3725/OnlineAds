@@ -25,13 +25,6 @@ namespace OnlineAds
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
-
-            //services.AddSession(options =>
-            //{
-            //    options.IdleTimeout = TimeSpan.FromSeconds(10);
-            //    options.Cookie.HttpOnly = true;
-            //    options.Cookie.IsEssential = true;
-            //});
             services.AddSession();
             services.AddCloudscribePagination();
             services.AddControllersWithViews();
@@ -62,7 +55,7 @@ namespace OnlineAds
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=User}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

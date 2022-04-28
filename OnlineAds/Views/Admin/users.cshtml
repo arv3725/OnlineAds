@@ -1,0 +1,74 @@
+﻿@using PagedList.Mvc
+@model cloudscribe.Pagination.Models.PagedResult<OnlineAds.Models.TblUser>
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    ViewData["Title"] = "Users";
+    ViewData["Controller"] = "Admin";
+    ViewData["Action"] = "users";
+}
+
+<div class="container" style="height:1150px; ">
+
+<h1>Users</h1>
+
+@using(@Html.BeginForm("users","Admin"))
+                {
+                <div style="padding-top: 20px">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" placeholder="Search" name="userSearch" id="search">
+                    </div>
+                    <button type="submit" class="btn btn-success">Search</button>
+                    <span>@Html.ActionLink("Show all users", "users")</span>
+                </div>
+                }
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Gender
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Contact
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int x = 0;}
+@foreach (var item in Model.Data) {
+                x++;
+                <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UGender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UContact)
+            </td>
+            <td>
+                <a asp-action="userDetail" asp-route-id="@item.UId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h4>@x Results found</h4>
+
+</div>
+
+<partial name="_PaginationPartial" view-data="ViewData" model="Model" />
